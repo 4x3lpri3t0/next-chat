@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 
@@ -8,6 +7,8 @@ namespace Chat.Controllers
     [Route("[controller]")]
     public class LinksController
     {
+        private const string RepoName = "https://github.com/Zedronar/next-chat";
+
         public class LinksObject
         {
             public string github { get; set; }
@@ -17,12 +18,7 @@ namespace Chat.Controllers
 
         public LinksController(IFileProvider fileProvider)
         {
-            IFileInfo contents = fileProvider.GetFileInfo("repo.json");
-            System.IO.Stream stream = contents.CreateReadStream();
-            byte[] bytes = new byte[stream.Length];
-            stream.Read(bytes, 0, (int)stream.Length);
-            stream.Close();
-            _links = JsonSerializer.Deserialize<LinksObject>(System.Text.Encoding.UTF8.GetString(bytes));
+            _links = new LinksObject() { github = RepoName };
         }
 
         /// <summary>

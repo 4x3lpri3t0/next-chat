@@ -62,16 +62,12 @@ const useSocket = (user, dispatch, onLogOut) => {
     useEffect(() => {
         if (connected && user) {
 
-            socket.on("user.connected", (user) => {
-                console.log("User:");
-                console.log(user);
-                updateUser(user, dispatch, `${user.username} connected`);
+            socket.on("user.connected", (username) => {
+                updateUser(user, dispatch, `${username} connected`);
             });
 
-            socket.on("user.disconnected", (user) => {
-                console.log("User:");
-                console.log(user);
-                updateUser(user, user, `${user.username} left`);
+            socket.on("user.disconnected", (username) => {
+                updateUser(user, user, `${username} left`);
             });
 
             socket.on("message", (message) => {

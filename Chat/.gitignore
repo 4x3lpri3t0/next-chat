@@ -37,3 +37,6 @@ msbuild.wrn
 .vs/
 
 !client/build
+
+# dependencies
+/node_modules
