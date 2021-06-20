@@ -1,49 +1,49 @@
-﻿using Chat.BusinessLogic.Base.Service.Interfaces;
+﻿using System.Threading.Tasks;
+using Chat.BusinessLogic.Base.Service.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using StackExchange.Redis;
-using System.Threading.Tasks;
 
 namespace Chat.BusinessLogic.Base.Service
 {
-	public abstract class BaseService : IBaseService
-	{
-		protected readonly IDatabase _database;
-		protected readonly IConnectionMultiplexer _redis;
+    public abstract class BaseService : IBaseService
+    {
+        protected readonly IDatabase _database;
+        protected readonly IConnectionMultiplexer _redis;
 
-		public BaseService(IConnectionMultiplexer redis)
-		{
-			_redis = redis;
-			_database = redis.GetDatabase();
-		}
+        public BaseService(IConnectionMultiplexer redis)
+        {
+            _redis = redis;
+            _database = redis.GetDatabase();
+        }
 
-		protected async Task PublishMessage<T>(string type, T data)
-		{
-			// Quick way to handle json type serialization.
-			var jsonData = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-			
-			// AXEL TODO: Remove this (debugging purposes)
-			//var jsonData = JsonConvert.DeserializeObject<JsonDocument>(dataString);
+        protected async Task PublishMessage<T>(string type, T data)
+        {
+            // Quick way to handle json type serialization.
+            string jsonData = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
-			var pubSubMessage = new PubSubMessage()
-			{
-				Type = type,
-				Data = jsonData
-			};
+            // AXEL TODO: Remove this (debugging purposes)
+            //var jsonData = JsonConvert.DeserializeObject<JsonDocument>(dataString);
 
-			await PublishMessage(pubSubMessage);
-		}
+            PubSubMessage pubSubMessage = new PubSubMessage()
+            {
+                Type = type,
+                Data = jsonData
+            };
 
-		private async Task PublishMessage(PubSubMessage pubSubMessage)
-		{
-			await _database.PublishAsync("MESSAGES", JsonConvert.SerializeObject(pubSubMessage));
-		}
-	}
+            await PublishMessage(pubSubMessage);
+        }
 
-	public class PubSubMessage
-	{
-		public string Type { get; set; }
-		public string Data { get; set; }
-		public string ServerId { get; set; } = "123";
-	}
+        private async Task PublishMessage(PubSubMessage pubSubMessage)
+        {
+            await _database.PublishAsync("MESSAGES", JsonConvert.SerializeObject(pubSubMessage));
+        }
+    }
+
+    public class PubSubMessage
+    {
+        public string Type { get; set; }
+        public string Data { get; set; }
+        public string ServerId { get; set; } = "123";
+    }
 }

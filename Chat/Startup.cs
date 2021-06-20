@@ -1,24 +1,24 @@
 using System;
 using System.IO;
 using System.Reflection;
+using AutoMapper;
+using Chat.BusinessLogic.Base.Service;
+using Chat.BusinessLogic.DbContext;
+using Chat.BusinessLogic.Helpers;
+using Chat.BusinessLogic.Hubs;
+using Chat.Configs;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using StackExchange.Redis;
-using Microsoft.AspNetCore.DataProtection;
-using Chat.BusinessLogic.Hubs;
-using Microsoft.AspNetCore.SignalR;
-using Chat.Configs;
-using AutoMapper;
-using Chat.BusinessLogic.Helpers;
-using Chat.BusinessLogic.DbContext;
-using Chat.BusinessLogic.Base.Service;
 using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace Chat
 {
@@ -33,25 +33,23 @@ namespace Chat
 
         public void ConfigureServices(IServiceCollection services)
         {
-
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Chat", Version = "v1" });
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
 
             ConnectionMultiplexer redis = null;
             string redisConnectionUrl = null;
             {
-                var redisEndpointUrl = (Environment.GetEnvironmentVariable("REDIS_ENDPOINT_URL") ?? "127.0.0.1:6379").Split(':');
-                var redisHost = redisEndpointUrl[0];
-                var redisPort = redisEndpointUrl[1];
+                string[] redisEndpointUrl = (Environment.GetEnvironmentVariable("REDIS_ENDPOINT_URL") ?? "127.0.0.1:6379").Split(':');
+                string redisHost = redisEndpointUrl[0];
+                string redisPort = redisEndpointUrl[1];
 
-                var redisPassword = Environment.GetEnvironmentVariable("REDIS_PASSWORD");
+                string redisPassword = Environment.GetEnvironmentVariable("REDIS_PASSWORD");
                 if (redisPassword != null)
                 {
                     redisConnectionUrl = $"{redisHost}:{redisPort},password={redisPassword}";
@@ -62,7 +60,7 @@ namespace Chat
                 }
                 redis = ConnectionMultiplexer.Connect(redisConnectionUrl);
                 services.AddSingleton<IConnectionMultiplexer>(redis);
-            }            
+            }
 
             services
                 .AddDataProtection()
@@ -89,7 +87,6 @@ namespace Chat
             services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 
             services.AddSignalR();
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -109,7 +106,7 @@ namespace Chat
 
             app.Map(new PathString(""), client =>
             {
-                var clientPath = Path.Combine(Directory.GetCurrentDirectory(), "./client/build");
+                string clientPath = Path.Combine(Directory.GetCurrentDirectory(), "./client/build");
                 StaticFileOptions clientAppDist = new StaticFileOptions()
                 {
                     FileProvider = new PhysicalFileProvider(clientPath)
@@ -124,10 +121,9 @@ namespace Chat
                 });
             });
 
-
             IHubContext<ChatHub> chatHab = null;
             IConnectionMultiplexer redis = null;
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            using (IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 DbInitializer.Seed(serviceScope).Wait();
                 ConvertToDto.Mapper = serviceScope.ServiceProvider.GetService<IMapper>();
@@ -135,12 +131,12 @@ namespace Chat
                 redis = serviceScope.ServiceProvider.GetService<IConnectionMultiplexer>();
             }
 
-            var channel = redis.GetSubscriber().Subscribe("MESSAGES");
+            ChannelMessageQueue channel = redis.GetSubscriber().Subscribe("MESSAGES");
             channel.OnMessage(async message =>
             {
                 try
                 {
-                    var mess = JsonConvert.DeserializeObject<PubSubMessage>(message.Message.ToString());
+                    PubSubMessage mess = JsonConvert.DeserializeObject<PubSubMessage>(message.Message.ToString());
                     await chatHab.Clients.All.SendAsync(mess.Type, mess.Data);
                 }
                 catch (Exception e)
@@ -148,7 +144,6 @@ namespace Chat
                     Console.WriteLine($"Error: {e} ");
                 }
             });
-
         }
     }
 }

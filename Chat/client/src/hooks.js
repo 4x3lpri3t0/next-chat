@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { getMe, login, logOut } from "./api";
 
-
 /** User management hook. */
 const useUser = (onUserLoaded = (user) => { }, dispatch) => {
     const [loading, setLoading] = useState(true);

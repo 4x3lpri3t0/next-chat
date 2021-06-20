@@ -2,7 +2,7 @@
 
 namespace Chat.BusinessLogic.Base.Service.Interfaces
 {
-	public interface IBaseService : IService
-	{
-	}
+    public interface IBaseService : IService
+    {
+    }
 }

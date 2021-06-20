@@ -2,9 +2,9 @@
 
 namespace Chat.Controllers.Base
 {
-	[ApiController]
-	[Route("[controller]")]
-	public class ApiController : ControllerBase
-	{
-	}
+    [ApiController]
+    [Route("[controller]")]
+    public class ApiController : ControllerBase
+    {
+    }
 }

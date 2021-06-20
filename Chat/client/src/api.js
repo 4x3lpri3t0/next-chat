@@ -14,7 +14,7 @@ export const getMe = () => {
         .catch(_ => null);
 };
 
-/** 
+/**
  * Fetch users by requested ids
  * @param {Array<number | string>} ids
  */
@@ -42,15 +42,15 @@ export const logOut = () => {
     return axios.post(url('/auth/logout'));
 };
 
-/** 
+/**
  * Function for checking which deployment urls exist.
- * 
+ *
  * @returns {Promise<{
  *   heroku?: string;
  *   google_cloud?: string;
  *   vercel?: string;
  *   github?: string;
- * }>} 
+ * }>}
  */
 export const getButtonLinks = () => {
     return axios.get(url('/links'))
@@ -58,8 +58,8 @@ export const getButtonLinks = () => {
         .catch(_ => null);
 };
 
-/** 
- * @returns {Promise<Array<{ names: string[]; id: string }>>} 
+/**
+ * @returns {Promise<Array<{ names: string[]; id: string }>>}
  */
 export const getRooms = async (userId) => {
     return axios.get(url(`/rooms/user/${userId}`)).then(x => x.data);
@@ -67,10 +67,10 @@ export const getRooms = async (userId) => {
 
 /**
  * Load messages
- * 
+ *
  * @param {string} id room id
- * @param {number} offset 
- * @param {number} size 
+ * @param {number} offset
+ * @param {number} size
  */
 export const getMessages = (id,
     offset = 0,

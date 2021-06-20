@@ -2,7 +2,7 @@
 
 namespace Chat.BusinessLogic.Components.Main.UserСomponent.Dtos
 {
-	public class UserLoginDto
+    public class UserLoginDto
     {
         [Required(AllowEmptyStrings = false)]
         public string Username { get; set; }

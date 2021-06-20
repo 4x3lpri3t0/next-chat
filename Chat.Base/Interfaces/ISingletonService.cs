@@ -1,6 +1,6 @@
 ﻿namespace Chat.Base.Interfaces
 {
-	public interface ISingletonService
-	{
-	}
+    public interface ISingletonService
+    {
+    }
 }
