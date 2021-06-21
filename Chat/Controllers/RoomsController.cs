@@ -24,7 +24,7 @@ namespace Chat.Controllers
         /// Create a new room.
         /// </summary>
         [HttpPut("{roomName}")]
-        public async Task<IActionResult> CreateRoom(string roomName = "NewRoom")
+        public async Task<IActionResult> CreateChatRoom(string roomName = "NewRoom")
         {
             var room = await chatService.CreateChatRoom(roomName);
 
@@ -32,10 +32,26 @@ namespace Chat.Controllers
         }
 
         /// <summary>
+        /// Add user to room.
+        /// </summary>
+        [HttpPut("{roomId}/user/{userId}")]
+        public async Task<IActionResult> AddUserToChatRoom(string roomId, string userId)
+        {
+            if (string.IsNullOrEmpty(roomId) || string.IsNullOrEmpty(userId))
+            {
+                return BadRequest();
+            }
+
+            await chatService.AddUserToChatRoom(roomId, userId);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Get rooms for specific user id.
         /// </summary>
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetRoom(int userId = 0)
+        public async Task<IActionResult> GetRooms(int userId = 0)
         {
             var rooms = await chatService.GetRooms(userId);
 

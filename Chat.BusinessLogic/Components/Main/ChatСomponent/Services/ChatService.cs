@@ -19,17 +19,17 @@ namespace Chat.BusinessLogic.Components.Main.ChatСomponent.Services
         public async Task<ChatRoom> CreateChatRoom(string roomName)
         {
             string newRoomId = Guid.NewGuid().ToString();
-            string newRoomName = $"room:{newRoomId}:name";
+            string newRoomKey = $"room:{newRoomId}:name";
 
             // Attempt to store new room.
             try
             {
-                await _database.StringSetAsync(newRoomName, roomName);
+                await _database.StringSetAsync(newRoomKey, roomName);
             }
             catch (Exception ex)
             {
                 // TODO: Use proper logger.
-                Console.WriteLine($"Exception while trying to create a new room. Room name: {newRoomName}");
+                Console.WriteLine($"Exception while trying to create a new room. Room key: {newRoomKey}");
                 throw ex;
             }
 
@@ -40,6 +40,23 @@ namespace Chat.BusinessLogic.Components.Main.ChatСomponent.Services
             };
 
             return room;
+        }
+
+        public async Task AddUserToChatRoom(string roomId, string userId)
+        {
+            string roomKey = $"user:{userId}:rooms";
+
+            // Attempt to add a new user to the room.
+            try
+            {
+                await _database.SetAddAsync(roomKey, roomId);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Use proper logger.
+                Console.WriteLine($"Exception while trying to add user {userId} to the room {roomKey}");
+                throw ex;
+            }
         }
 
         public async Task<List<ChatRoomMessage>> GetMessages(string roomId = "0", int offset = 0, int size = 50)

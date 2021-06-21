@@ -10,6 +10,8 @@ namespace Chat.BusinessLogic.Components.Main.ChatСomponent.Services.Interfaces
     {
         Task<ChatRoom> CreateChatRoom(string roomName);
 
+        Task AddUserToChatRoom(string roomId, string userId);
+
         Task<List<ChatRoom>> GetRooms(int userId = 0);
 
         Task<List<ChatRoomMessage>> GetMessages(string roomId = "0", int offset = 0, int size = 50);
