@@ -16,6 +16,32 @@ namespace Chat.BusinessLogic.Components.Main.ChatСomponent.Services
         {
         }
 
+        public async Task<ChatRoom> CreateChatRoom(string roomName)
+        {
+            string newRoomId = Guid.NewGuid().ToString();
+            string newRoomName = $"room:{newRoomId}:name";
+
+            // Attempt to store new room.
+            try
+            {
+                await _database.StringSetAsync(newRoomName, roomName);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Use proper logger.
+                Console.WriteLine($"Exception while trying to create a new room. Room name: {newRoomName}");
+                throw ex;
+            }
+
+            var room = new ChatRoom()
+            {
+                Id = newRoomId,
+                Names = new List<string>()
+            };
+
+            return room;
+        }
+
         public async Task<List<ChatRoomMessage>> GetMessages(string roomId = "0", int offset = 0, int size = 50)
         {
             var roomKey = $"room:{roomId}";

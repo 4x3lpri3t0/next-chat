@@ -21,6 +21,17 @@ namespace Chat.Controllers
         }
 
         /// <summary>
+        /// Create a new room.
+        /// </summary>
+        [HttpPut("{roomName}")]
+        public async Task<IActionResult> CreateRoom(string roomName = "NewRoom")
+        {
+            var room = await chatService.CreateChatRoom(roomName);
+
+            return Ok(room.ToDto<ChatRoomDto>());
+        }
+
+        /// <summary>
         /// Get rooms for specific user id.
         /// </summary>
         [HttpGet("user/{userId}")]
