@@ -1,4 +1,35 @@
-# next-chat
+- [Next Chat](#next-chat)
+    + [Tech Stack](#tech-stack)
+    + [Database Schema](#database-schema)
+      - [User](#user)
+      - [ChatRoom](#chatroom)
+      - [ChatRoomMessage](#chatroommessage)
+    + [Initialization](#initialization)
+    + [Registration](#registration)
+      - [Data storage](#data-storage)
+      - [Data access](#data-access)
+      - [User Data in Redis HashSet](#user-data-in-redis-hashset)
+    + [Rooms](#rooms)
+      - [Data storage](#data-storage-1)
+      - [Data access](#data-access-1)
+      - [Get all My Rooms](#get-all-my-rooms)
+    + [Messages](#messages)
+      - [Pub/sub](#pub-sub)
+      - [Data storage](#data-storage-2)
+      - [Data access](#data-access-2)
+      - [Send Message](#send-message)
+    + [Session handling](#session-handling)
+      - [Data storage / access](#data-storage---access)
+- [To run it locally](#to-run-it-locally)
+    + [Have latest .netcore SDK](#have-latest-netcore-sdk)
+    + [Have Redis running](#have-redis-running)
+    + [Write in environment variable or Dockerfile actual connection to Redis](#write-in-environment-variable-or-dockerfile-actual-connection-to-redis)
+    + [Run backend](#run-backend)
+- [Features I would like to add or could have done better if I had more time](#features-i-would-like-to-add-or-could-have-done-better-if-i-had-more-time)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+# Next Chat
 
 ### Tech Stack
 
@@ -250,7 +281,7 @@ Server id is used to discard the messages by the server instance which sends the
 
 `data` is method-specific information. In the example above it's related to the new message.
 
-#### How the data is stored / accessed:
+#### Data storage / access
 
 The session data is stored in Redis by utilizing the [**StackExchange.Redis**](https://github.com/StackExchange/StackExchange.Redis) client.
 
@@ -272,16 +303,27 @@ services.AddSession(options =>
 });
 ```
 
-## How to run it locally?
+# To run it locally
 
-#### Write in environment variable or Dockerfile actual connection to Redis:
+### Have latest .netcore SDK
+
+(Download here)[https://dotnet.microsoft.com/download/dotnet/5.0]
+
+### Have Redis running
+
+Either:
+* Have a (redis container)[https://hub.docker.com/_/redis] running with default port (6379) exposed
+or
+* (Download redis server for windows here)[https://medium.com/cook-php/how-to-run-redis-on-windows-97b829a42486]
+
+### Write in environment variable or Dockerfile actual connection to Redis
 
 ```
    REDIS_ENDPOINT_URL = "Redis server URI:PORT_NUMBER"
    REDIS_PASSWORD = "Password to the server"
 ```
 
-#### Run backend
+### Run backend
 
 From the _BasicRedisChat_ directory execute:
 
@@ -289,7 +331,7 @@ From the _BasicRedisChat_ directory execute:
 dotnet run
 ```
 
-## Features I would like to add or could have done better if I had more time
+# Features I would like to add or could have done better if I had more time
 
 - [ ] Use a container orchestration technology (Service Fabric or Kubernetes).
 - [ ] Messages are being stored, but ideally should add persistent storage and use Redis only for caching.
