@@ -1,3 +1,34 @@
+# Table of Contents
+
+- [Next Chat](#next-chat)
+    + [Tech Stack](#tech-stack)
+    + [Database Schema](#database-schema)
+      - [User](#user)
+      - [ChatRoom](#chatroom)
+      - [ChatRoomMessage](#chatroommessage)
+    + [Initialization](#initialization)
+    + [Registration](#registration)
+      - [Data storage](#data-storage)
+      - [Data access](#data-access)
+      - [User Data in Redis HashSet](#user-data-in-redis-hashset)
+    + [Rooms](#rooms)
+      - [Data storage](#data-storage-1)
+      - [Data access](#data-access-1)
+      - [Get all My Rooms](#get-all-my-rooms)
+    + [Messages](#messages)
+      - [Pub Sub](#pub-sub)
+      - [Data storage](#data-storage-2)
+      - [Data access](#data-access-2)
+      - [Send Message](#send-message)
+    + [Session handling](#session-handling)
+      - [Data storage and access](#data-storage-and-access)
+- [To run it locally](#to-run-it-locally)
+    + [Have latest .netcore SDK](#have-latest-netcore-sdk)
+    + [Have Redis running](#have-redis-running)
+    + [Write in environment variable or Dockerfile actual connection to Redis](#write-in-environment-variable-or-dockerfile-actual-connection-to-redis)
+    + [Run backend](#run-backend)
+- [Features I would like to add or could have done better if I had more time](#features-i-would-like-to-add-or-could-have-done-better-if-i-had-more-time)
+
 # Next Chat
 
 ### Tech Stack
@@ -250,7 +281,7 @@ Server id is used to discard the messages by the server instance which sends the
 
 `data` is method-specific information. In the example above it's related to the new message.
 
-#### Data storage / access
+#### Data storage and access
 
 The session data is stored in Redis by utilizing the [**StackExchange.Redis**](https://github.com/StackExchange/StackExchange.Redis) client.
 
