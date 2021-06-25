@@ -119,7 +119,7 @@ Redis is used mainly as a database to keep the user/messages data and for sendin
 
 - The chat data is stored in various keys and various data types.
   - User data is stored in a hash set where each user entry contains the next values:
-    - `username`: unique user name;
+    - `username`: unique user name
     - `password`: hashed password
 
 * User hash set is accessed by key `user:{userId}`. The data for it is stored with `HSET key field data`. User id is calculated by incrementing the `total_users`.
@@ -307,14 +307,13 @@ services.AddSession(options =>
 
 ### Have latest .netcore SDK
 
-(Download here)[https://dotnet.microsoft.com/download/dotnet/5.0]
+[Download here](https://dotnet.microsoft.com/download/dotnet/5.0)
 
 ### Have Redis running
 
-Either:
-* Have a (redis container)[https://hub.docker.com/_/redis] running with default port (6379) exposed
-or
-* (Download redis server for windows here)[https://medium.com/cook-php/how-to-run-redis-on-windows-97b829a42486]
+Two alternatives:
+* Have a [redis container](https://hub.docker.com/_/redis) running with default port (6379) exposed
+* [Download redis server for windows here](https://medium.com/cook-php/how-to-run-redis-on-windows-97b829a42486)
 
 ### Write in environment variable or Dockerfile actual connection to Redis
 
