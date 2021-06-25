@@ -36,7 +36,7 @@ namespace Chat.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
-            BusinessLogic.Components.Main.UserСomponent.Entities.User user = await securityService.Login(userLoginDto);
+            var user = await securityService.Login(userLoginDto);
             if (user == null)
             {
                 return new NotFoundResult();
