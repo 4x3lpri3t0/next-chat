@@ -49,8 +49,7 @@ namespace Chat.BusinessLogic.DbContext
                         "Hello!",
                         "Hi, How are you? Have you heard the news?",
                         "Which news?",
-                        "Axel got hired by NextGames",
-                        "Well of course! He is an amazing candidate"
+                        "Axel built a chatbot!",
                     };
             Func<string> getGreeting = () => greetings[(int)Math.Floor(rand() * greetings.Count)];
             var addMessage = new Func<string, string, string, int, Task>(async (string roomId, string fromId, string content, int timeStamp) =>

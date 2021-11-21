@@ -1,5 +1,5 @@
 {
-  "name": "NextGames chat",
+  "name": "Next chat",
   "env": {
     "REDIS_ENDPOINT_URL": {
       "description": "A Redis cloud endpoint URL.",
