@@ -322,19 +322,32 @@ Two alternatives:
    REDIS_PASSWORD = "Password to the server"
 ```
 
-### Run backend
-
-From the _BasicRedisChat_ directory execute:
+### Build frontend
 
 ```sh
-dotnet run
+cd WebApp/Chat/client
+npm run build
 ```
 
-# Features I would like to add or could have done better if I had more time
+### Run backend (Chatbot)
 
+```sh
+cd Chatbot
+dotnet watch run
+```
+
+### Run backend (WebApp)
+
+```sh
+cd /WebApp/Chat
+dotnet watch run
+```
+
+# TODO (if I had more time)
+
+- [ ] Dockerize + docker-compose
 - [ ] Use a container orchestration technology (Service Fabric or Kubernetes).
 - [ ] Messages are being stored, but ideally should add persistent storage and use Redis only for caching.
 - [ ] Host it in Azure.
 - [ ] Add a metrics server/provider (e.g. Datadog) and emit metrics.
 - [ ] Setup CI/CD for the project.
-- [ ] Add a chatbot (just for fun).
