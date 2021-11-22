@@ -76,3 +76,23 @@
     .username-select-block-item:hover {
         background-color: var(--light);
     }
+
+#wrapper {
+    display: flex;
+    height: 100%;
+    margin: 0;
+}
+
+#left-chat {
+    height: 100%;
+    width: 100%;
+    flex: 0 0 45%;
+}
+
+#right-chat {
+    flex: 1;
+}
+
+.webchat-css {
+    border-radius: .25rem !important;
+}

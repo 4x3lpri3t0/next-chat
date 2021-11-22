@@ -13,6 +13,19 @@ import useChatHandlers from "./use-chat-handlers";
  * }} props
  */
 export default function Chat({ onLogOut, user, onMessageSend }) {
+    (async function () {
+        const res = await fetch('https://webchat-mockbot.azurewebsites.net/directline/token', { method: 'POST' });
+        const { token } = await res.json();
+        const { ReactWebChat } = window.WebChat;
+
+        window.ReactDOM.render(
+            <ReactWebChat directLine={window.WebChat.createDirectLine({ token })} />,
+            document.getElementById('webchat')
+        );
+
+        document.querySelector('#webchat > *').focus();
+    })().catch(err => console.error(err));
+
     const {
         onLoadMoreMessages,
         onUserClicked,
@@ -29,45 +42,58 @@ export default function Chat({ onLogOut, user, onMessageSend }) {
     } = useChatHandlers(user);
 
     return (
-        <div className="container py-5 px-4">
-            <div className="chat-body row overflow-hidden shadow bg-light rounded">
-                <div className="col-4 px-0">
-                    <ChatList
-                        user={user}
-                        onLogOut={onLogOut}
-                        rooms={rooms}
-                        currentRoom={currentRoom}
-                        dispatch={dispatch}
-                    />
-                </div>
-                {/* Chat Box*/}
-                <div className="col-8 px-0 flex-column bg-white rounded-lg">
-                    <div className="px-4 py-4" style={{ borderBottom: "1px solid #eee" }}>
-                        <h2 className="font-size-15 mb-0">{room ? room.name : "Room"}</h2>
+        <div id="wrapper">
+
+            <div id="left-chat" role="main" className="container py-5 px-4">
+                <div className="chat-body row overflow-hidden shadow bg-light rounded flex-column">
+
+                    <div className="py-2 bg-light">
+                        <p className="h5 mb-0 py-1 chats-title">Chatbot</p>
                     </div>
-                    <MessageList
-                        messageListElement={messageListElement}
-                        messages={messages}
-                        room={room}
-                        onLoadMoreMessages={onLoadMoreMessages}
-                        user={user}
-                        onUserClicked={onUserClicked}
-                        users={users}
-                    />
+                    <div id="webchat" role="main" className="messages-box flex flex-1"></div> {/*chat-body row overflow-hidden shadow bg-light rounded*/}
+                </div>
+            </div>
 
-                    {/* Typing area */}
-                    <TypingArea
-                        message={message}
-                        setMessage={setMessage}
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            onMessageSend(message.trim(), roomId);
-                            setMessage("");
+            <div id="right-chat" className="container py-5 px-4">
+                <div className="chat-body row overflow-hidden shadow bg-light rounded">
+                    <div className="col-4 px-0">
+                        <ChatList
+                            user={user}
+                            onLogOut={onLogOut}
+                            rooms={rooms}
+                            currentRoom={currentRoom}
+                            dispatch={dispatch}
+                        />
+                    </div>
+                    {/* Chat Box*/}
+                    <div className="col-8 px-0 flex-column bg-white rounded-lg">
+                        <div className="px-4 py-4" style={{ borderBottom: "1px solid #eee" }}>
+                            <h2 className="font-size-15 mb-0">{room ? room.name : "Room"}</h2>
+                        </div>
+                        <MessageList
+                            messageListElement={messageListElement}
+                            messages={messages}
+                            room={room}
+                            onLoadMoreMessages={onLoadMoreMessages}
+                            user={user}
+                            onUserClicked={onUserClicked}
+                            users={users}
+                        />
 
-                            messageListElement.current.scrollTop =
-                                messageListElement.current.scrollHeight;
-                        }}
-                    />
+                        {/* Typing area */}
+                        <TypingArea
+                            message={message}
+                            setMessage={setMessage}
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                onMessageSend(message.trim(), roomId);
+                                setMessage("");
+
+                                messageListElement.current.scrollTop =
+                                    messageListElement.current.scrollHeight;
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

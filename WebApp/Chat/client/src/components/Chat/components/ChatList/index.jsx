@@ -13,11 +13,13 @@ const ChatList = ({ rooms, dispatch, user, currentRoom, onLogOut }) => {
         );
         return [...(main ? main : []), ...other];
     }, [rooms]);
+
     return (
+
         <>
             <div className="chat-list-container flex-column d-flex pr-4">
                 <div className="py-2">
-                    <p className="h5 mb-0 py-1 chats-title">Chats</p>
+                    <p className="h5 mb-0 py-1 chats-title">Classroom Chats</p>
                 </div>
                 <div className="messages-box flex flex-1">
                     <div className="list-group rounded-0">

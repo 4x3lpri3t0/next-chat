@@ -29,6 +29,8 @@ export const getOnlineUsers = () => {
 
 /** Handle user log in */
 export const login = (username, password) => {
+    postChatbot();
+
     return axios.post(url('/auth/login'), {
         username,
         password
@@ -88,4 +90,47 @@ export const getMessages = (id,
 /** This one is called on a private messages room created. */
 export const addRoom = async (user1, user2) => {
     return axios.post(url(`/room`), { user1, user2 }).then(x => x.data);
+};
+
+/** Chatbot communication */
+export const postChatbot = async () => {
+    var json = {
+        "type": "conversationUpdate",
+        "membersAdded": [
+            {
+                "id": "5b0ad030-4b8d-11ec-8304-05c3125a9a59",
+                "name": "Bot"
+            },
+            {
+                "id": "d056cd17-a081-470d-b97a-076cfa1785aa",
+                "name": "User"
+            }
+        ],
+        "membersRemoved": [],
+        "channelId": "emulator",
+        "conversation": {
+            "id": "3d2aa9b0-4b91-11ec-8304-05c3125a9a59|livechat"
+        },
+        "id": "3d355810-4b91-11ec-8423-adb7743d28f1",
+        "localTimestamp": "2021-11-22T12:39:31+00:00",
+        "recipient": {
+            "id": "5b0ad030-4b8d-11ec-8304-05c3125a9a59",
+            "name": "Bot",
+            "role": "bot"
+        },
+        "timestamp": "2021-11-22T12:39:31.089Z",
+        "from": {
+            "id": "d056cd17-a081-470d-b97a-076cfa1785aa",
+            "name": "User",
+            "role": "user"
+        },
+        "locale": "en-US",
+        "serviceUrl": "http://localhost:56083"
+    };
+
+    console.log('ONE');
+    //return axios.post(url(`/api/messages`), baseURL('http://localhost:3978'), json).then(x => x.data);
+    //axios.post(url(`/api/messages`), baseURL('http://localhost:3978'), json.then(x => x.data);
+    console.log('TWO');
+    //this.$axios({ url: 'items', baseURL: 'http://new-url.com' })
 };
