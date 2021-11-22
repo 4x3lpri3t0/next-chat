@@ -328,6 +328,10 @@ Two alternatives:
 cd WebApp/Chat/client
 npm run build
 ```
+Or for hot-reload:
+```sh
+yarn watch
+```
 
 ### Run backend (Chatbot)
 
