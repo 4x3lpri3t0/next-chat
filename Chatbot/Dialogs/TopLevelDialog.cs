@@ -27,57 +27,65 @@ namespace Microsoft.BotBuilderSamples
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-                NameStepAsync,
-                AgeStepAsync,
-                StartSelectionStepAsync,
+                //NameStepAsync,
+                //AgeStepAsync,
+                //StartSelectionStepAsync,
+                CustomStartSelectionStepAsync,
                 AcknowledgementStepAsync,
             }));
 
             InitialDialogId = nameof(WaterfallDialog);
         }
 
-        private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //private static async Task<DialogTurnResult> NameStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //{
+        //    // Create an object in which to collect the user's information within the dialog.
+        //    stepContext.Values[UserInfo] = new UserProfile();
+
+        //    var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") };
+
+        //    // Ask the user to enter their name.
+        //    return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
+        //}
+
+        //private async Task<DialogTurnResult> AgeStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //{
+        //    // Set the user's name to what they entered in response to the name prompt.
+        //    var userProfile = (UserProfile)stepContext.Values[UserInfo];
+        //    userProfile.Name = (string)stepContext.Result;
+
+        //    var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Please enter your age.") };
+
+        //    // Ask the user to enter their age.
+        //    return await stepContext.PromptAsync(nameof(NumberPrompt<int>), promptOptions, cancellationToken);
+        //}
+
+        //private async Task<DialogTurnResult> StartSelectionStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //{
+        //    // Set the user's age to what they entered in response to the age prompt.
+        //    var userProfile = (UserProfile)stepContext.Values[UserInfo];
+        //    userProfile.Age = (int)stepContext.Result;
+
+        //    if (userProfile.Age < 25)
+        //    {
+        //        // If they are too young, skip the review selection dialog, and pass an empty list to the next step.
+        //        await stepContext.Context.SendActivityAsync(
+        //            MessageFactory.Text("You must be 25 or older to participate."),
+        //            cancellationToken);
+        //        return await stepContext.NextAsync(new List<string>(), cancellationToken);
+        //    }
+        //    else
+        //    {
+        //        // Otherwise, start the review selection dialog.
+        //        return await stepContext.BeginDialogAsync(nameof(ReviewSelectionDialog), null, cancellationToken);
+        //    }
+        //}
+
+        private async Task<DialogTurnResult> CustomStartSelectionStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
         {
-            // Create an object in which to collect the user's information within the dialog.
-            stepContext.Values[UserInfo] = new UserProfile();
+            stepContext.Values[UserInfo] = new UserProfile() { Name = "Axel" };
 
-            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Please enter your name.") };
-
-            // Ask the user to enter their name.
-            return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
-        }
-
-        private async Task<DialogTurnResult> AgeStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            // Set the user's name to what they entered in response to the name prompt.
-            var userProfile = (UserProfile)stepContext.Values[UserInfo];
-            userProfile.Name = (string)stepContext.Result;
-
-            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Please enter your age.") };
-
-            // Ask the user to enter their age.
-            return await stepContext.PromptAsync(nameof(NumberPrompt<int>), promptOptions, cancellationToken);
-        }
-
-        private async Task<DialogTurnResult> StartSelectionStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
-        {
-            // Set the user's age to what they entered in response to the age prompt.
-            var userProfile = (UserProfile)stepContext.Values[UserInfo];
-            userProfile.Age = (int)stepContext.Result;
-
-            if (userProfile.Age < 25)
-            {
-                // If they are too young, skip the review selection dialog, and pass an empty list to the next step.
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("You must be 25 or older to participate."),
-                    cancellationToken);
-                return await stepContext.NextAsync(new List<string>(), cancellationToken);
-            }
-            else
-            {
-                // Otherwise, start the review selection dialog.
-                return await stepContext.BeginDialogAsync(nameof(ReviewSelectionDialog), null, cancellationToken);
-            }
+            return await stepContext.BeginDialogAsync(nameof(ReviewSelectionDialog), null, cancellationToken);
         }
 
         private async Task<DialogTurnResult> AcknowledgementStepAsync(WaterfallStepContext stepContext, CancellationToken cancellationToken)
@@ -88,7 +96,7 @@ namespace Microsoft.BotBuilderSamples
 
             // Thank them for participating.
             await stepContext.Context.SendActivityAsync(
-                MessageFactory.Text($"Thanks for participating, {((UserProfile)stepContext.Values[UserInfo]).Name}."),
+                MessageFactory.Text($"Thank you for reviewing your exercises, {((UserProfile)stepContext.Values[UserInfo]).Name}."),
                 cancellationToken);
 
             // Exit the dialog, returning the collected user information.

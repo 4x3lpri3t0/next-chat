@@ -38,7 +38,7 @@ namespace Microsoft.BotBuilderSamples
             var userInfo = (UserProfile)stepContext.Result;
 
             string status = "You are signed up to review "
-                + (userInfo.ExercisesToReview.Count is 0 ? "no exercises" : string.Join(" and ", userInfo.ExercisesToReview))
+                + (userInfo.ExercisesToReview.Count is 0 ? "no more exercises for today" : string.Join(" and ", userInfo.ExercisesToReview))
                 + ".";
 
             await stepContext.Context.SendActivityAsync(status);
