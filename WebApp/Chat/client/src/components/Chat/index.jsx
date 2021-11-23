@@ -14,12 +14,26 @@ import useChatHandlers from "./use-chat-handlers";
  */
 export default function Chat({ onLogOut, user, onMessageSend }) {
     (async function () {
-        const res = await fetch('https://webchat-mockbot.azurewebsites.net/directline/token', { method: 'POST' });
-        const { token } = await res.json();
+        // AXEL TODO
+        //const res = await fetch('https://webchat-mockbot.azurewebsites.net/directline/token', { method: 'POST' });
+        //const { token } = await res.json();
+
         const { ReactWebChat } = window.WebChat;
 
         window.ReactDOM.render(
-            <ReactWebChat directLine={window.WebChat.createDirectLine({ token })} />,
+            //<ReactWebChat directLine={window.WebChat.createDirectLine({ token })} />,
+
+            <ReactWebChat directLine={window.WebChat.createDirectLine(
+                {
+                    secret: '',
+                    token: '',
+                    domain: 'http://127.0.0.1:3000/directline',
+                    webSocket: false,
+                    pollingInterval: 2000
+                }
+
+            )} />,
+
             document.getElementById('webchat')
         );
 
@@ -50,7 +64,7 @@ export default function Chat({ onLogOut, user, onMessageSend }) {
                     <div className="py-2 bg-light">
                         <p className="h5 mb-0 py-1 chats-title">Chatbot</p>
                     </div>
-                    <div id="webchat" role="main" className="messages-box flex flex-1"></div> {/*chat-body row overflow-hidden shadow bg-light rounded*/}
+                    <div id="webchat" role="main" className="messages-box flex flex-1"></div>
                 </div>
             </div>
 

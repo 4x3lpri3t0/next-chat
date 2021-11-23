@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Chat.BusinessLogic.Base.Service;
@@ -33,6 +34,27 @@ namespace Chat
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var allowedOrigins = Configuration.GetSection("AllowedOrigins").Get<string[]>();
+            services.AddCors(options => options.AddPolicy("Cors",
+                builder =>
+                {
+                    builder
+                    .WithOrigins(allowedOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                }));
+
+            //services.AddCors(options =>
+            //    options.AddPolicy(
+            //        "CorsPolicyName",
+            //        policy =>
+            //            policy
+            //                .WithOrigins(Configuration.GetValue<string>("MyRandomKey").Split(";").ToArray())
+            //                .AllowAnyMethod()
+            //                .AllowAnyHeader()
+            //    )
+            //);
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -97,6 +119,8 @@ namespace Chat
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet_rest v1"));
             }
+
+            app.UseCors("Cors");
 
             app.UseRouting();
 
