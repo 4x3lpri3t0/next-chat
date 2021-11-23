@@ -33,16 +33,6 @@ namespace Chat
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var allowedOrigins = Configuration.GetSection("AllowedOrigins").Get<string[]>();
-            services.AddCors(options => options.AddPolicy("Cors",
-                builder =>
-                {
-                    builder
-                    .WithOrigins(allowedOrigins)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-                }));
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -107,8 +97,6 @@ namespace Chat
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dotnet_rest v1"));
             }
-
-            app.UseCors("Cors");
 
             app.UseRouting();
 
