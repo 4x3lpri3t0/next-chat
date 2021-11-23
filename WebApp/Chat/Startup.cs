@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using AutoMapper;
 using Chat.BusinessLogic.Base.Service;
@@ -43,17 +42,6 @@ namespace Chat
                     .AllowAnyMethod()
                     .AllowAnyHeader();
                 }));
-
-            //services.AddCors(options =>
-            //    options.AddPolicy(
-            //        "CorsPolicyName",
-            //        policy =>
-            //            policy
-            //                .WithOrigins(Configuration.GetValue<string>("MyRandomKey").Split(";").ToArray())
-            //                .AllowAnyMethod()
-            //                .AllowAnyHeader()
-            //    )
-            //);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
