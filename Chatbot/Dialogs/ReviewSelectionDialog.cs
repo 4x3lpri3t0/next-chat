@@ -45,17 +45,17 @@ namespace Microsoft.BotBuilderSamples
             {
                 "School Conversation",
                 new string[] {
-                    "Who is the blah blah",     // Q1
-                    "Question 2",                // Q2
-                    "Question 3"                // Q3
+                    "Why did one of the kids open the window?",                     // Q1
+                    "What date was it?",                                            // Q2
+                    "What did they write on the board?"                             // Q3
                 }
             },
             {
                 "English Small Talk",
                 new string[] {
-                    "Who is the blah blah",     // Q1
-                    "Question 2",                // Q2
-                    "Question 3"                // Q3
+                    "What are the girls scared of?",                                                                                // Q1
+                    "One of the guys was having trouble sleeping well and concentrating. What does his friend recommends?",         // Q2
+                    "According to her, why is Susan a morning person?"                                                              // Q3
                 }
             }
         };
@@ -65,17 +65,17 @@ namespace Microsoft.BotBuilderSamples
             {
                 "School Conversation",
                 new List<string>[] {
-                    new List<string> { "Correct", "Incorrect", "Incorrect" },
-                    new List<string> { "Correct", "Incorrect", "Incorrect" },
-                    new List<string> { "Correct", "Incorrect", "Incorrect" },
+                    new List<string> { "It was very hot in the classroom that day", "He wanted to see the airplane", "There was an ice cream truck outside" }, // Q1 options
+                    new List<string> { "September 17th", "March 27th", "December 31st" },
+                    new List<string> { "The days of the week", "Their names", "They didn't write anything on the board" },
                 }
             },
             {
                 "English Small Talk",
                 new List<string>[] {
-                    new List<string> { "Correct", "Incorrect", "Incorrect" },
-                    new List<string> { "Correct", "Incorrect", "Incorrect" },
-                    new List<string> { "Correct", "Incorrect", "Incorrect" },
+                    new List<string> { "Storms and spiders", "Witches and demons", "Global warming and climate change" },
+                    new List<string> { "Eat healthy food and work out more often", "Go see a doctor", "Don't do anything about it" },
+                    new List<string> { "She likes to have time to exercise properly and eat a big breakfast", "She doesn't like to sleep", "She has to be at work very early" },
                 }
             },
         };
@@ -85,17 +85,17 @@ namespace Microsoft.BotBuilderSamples
             {
                 "School Conversation",
                 new string[] {
-                    "Correct",    // Correct answer to Q1
-                    "Correct",   // Correct answer to Q2
-                    "Correct"   // Correct answer to Q3
+                    "It was very hot in the classroom that day",          // Correct answer to Q1
+                    "September 17th",                                     // Correct answer to Q2
+                    "The days of the week"                                // Correct answer to Q3
                 }
             },
             {
                 "English Small Talk",
                 new string[] {
-                    "Correct",   // Correct answer to Q1
-                    "Correct",    // Correct answer to Q2
-                    "Correct"    // Correct answer to Q3
+                    "Storms and spiders",                                                          // Correct answer to Q1
+                    "Eat healthy food and work out more often",                                    // Correct answer to Q2
+                    "She likes to have time to exercise properly and eat a big breakfast"          // Correct answer to Q3
                 }
             }
         };
@@ -305,17 +305,8 @@ namespace Microsoft.BotBuilderSamples
             await stepContext.Context.SendActivityAsync(status);
             await stepContext.Context.SendActivityAsync("That was the last question for that exercise, good job!");
 
-            //// Retrieve their selection list, the choice they made, and whether they chose to finish.
+            // Retrieve their selection list, the choice they made, and whether they chose to finish.
             var list = stepContext.Values[ExercisesSelected] as List<string>;
-            //var choice = (FoundChoice)stepContext.Result;
-            //var done = choice.Value == DoneOption;
-
-            //if (done)
-            //{
-            //    // If they're done, exit and return their list.
-            //    return await stepContext.EndDialogAsync(list, cancellationToken);
-            //}
-
             // Add the chosen exercise to the list.
             list.Add(chosenExercise.Value);
             // Repeat this dialog, passing in the list from this iteration.
