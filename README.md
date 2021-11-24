@@ -343,15 +343,22 @@ dotnet watch run
 ### Run backend (WebApp)
 
 ```sh
-cd /WebApp/Chat
+cd WebApp/Chat
 dotnet watch run
+```
+
+### Run Offline-DirectLine
+
+```sh
+cd WebApp
+directline -d 3000 -b "http://127.0.0.1:3978/api/messages"
 ```
 
 # TODO (if I had more time)
 
 - [ ] Dockerize + docker-compose
-- [ ] Use a container orchestration technology (Service Fabric or Kubernetes).
-- [ ] Messages are being stored, but ideally should add persistent storage and use Redis only for caching.
-- [ ] Host it in Azure.
-- [ ] Add a metrics server/provider (e.g. Datadog) and emit metrics.
+- [ ] Use a container orchestration technology (Kubernetes).
+- [ ] Messages are being stored in memory. Ideally add persistent storage and use Redis only for caching.
+- [ ] Host it in a cloud provider (Azure, AWS or GCP).
+- [ ] Add a metrics server/provider (e.g. Datadog) and emit meaningful metrics.
 - [ ] Setup CI/CD for the project.
